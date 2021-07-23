@@ -1,0 +1,142 @@
+<cdk-virtual-scroll-viewport [itemSize]="itemSize" style="height: 100%">
+  <ng-container *cdkVirtualFor="let item of fullDatasource"></ng-container>
+
+  <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+    <mat-tree-node
+      class="node-line"
+      *matTreeNodeDef="let node"
+      matTreeNodeToggle
+      matTreeNodePadding
+    >
+      <button mat-icon-button disabled></button>
+
+      <ng-container *ngIf="checkedable">
+        <mat-checkbox
+          [checked]="checklistSelection.isSelected(node.originNode)"
+          (change)="todoLeafItemSelectionToggle(node)"
+          >{{ node.name }}</mat-checkbox
+        >
+      </ng-container>
+      <ng-container *ngIf="!checkedable">
+        <span
+          class="node-label"
+          [class.selected]="node.originNode.selected"
+          (click)="nameClick(node)"
+          >{{ node.name }}</span
+        >
+      </ng-container>
+
+      <span
+        class="node-template"
+        [class.hover]="treeNodeTemplateStyle === 'hover'"
+        [class.inline]="treeNodeTemplateStyle === 'inline'"
+        *ngIf="treeNodeTemplate"
+      >
+        <ng-container
+          [ngTemplateOutlet]="treeNodeTemplate"
+          [ngTemplateOutletContext]="{ $implicit: node, node: node }"
+        >
+        </ng-container>
+      </span>
+
+      <ng-container *ngIf="showLine && treeControl.getLevel(node) > 0">
+        <span
+          class="node-bg-line-v"
+          [class.last]="node.originNode.lastData"
+          [class.hide]="
+            node.originNode.lastData && treeControl.getLevel(node) > 1
+          "
+          style="left: 20px"
+        ></span>
+        <span
+          class="node-bg-line-v"
+          [class.last]="node.originNode.last"
+          *ngIf="treeControl.getLevel(node) > 1"
+          [style.left.px]="20 + (treeControl.getLevel(node) - 1) * 40"
+        ></span>
+        <span
+          class="node-bg-line-h"
+          [style.left.px]="20 + (treeControl.getLevel(node) - 1) * 40"
+        ></span>
+      </ng-container>
+    </mat-tree-node>
+
+    <mat-tree-node
+      class="node-line"
+      *matTreeNodeDef="let node; when: hasChild"
+      matTreeNodePadding
+    >
+      <button
+        mat-icon-button
+        matTreeNodeToggle
+        [attr.aria-label]="'toggle ' + node.name"
+        (click)="expandClick(node)"
+      >
+        <mat-icon class="mat-icon-rtl-mirror">
+          <ng-container *ngIf="iconType === 'arrow'">
+            {{ treeControl.isExpanded(node) ? "expand_more" : "chevron_right" }}
+          </ng-container>
+
+          <ng-container *ngIf="iconType === 'folder'">
+            {{ treeControl.isExpanded(node) ? "folder" : "folder_open" }}
+          </ng-container>
+        </mat-icon>
+      </button>
+
+      <ng-container *ngIf="checkedable">
+        <mat-checkbox
+          [checked]="checklistSelection.isSelected(node.originNode)"
+          [indeterminate]="descendantsPartiallySelected(node)"
+          (change)="todoLeafItemSelectionToggle(node)"
+          >{{ node.name }}</mat-checkbox
+        >
+      </ng-container>
+      <ng-container *ngIf="!checkedable">
+        <span
+          class="node-label"
+          [class.selected]="node.originNode.selected"
+          (click)="nameClick(node)"
+          >{{ node.name }}</span
+        >
+      </ng-container>
+
+      <span
+        class="node-template"
+        [class.hover]="treeNodeTemplateStyle === 'hover'"
+        [class.inline]="treeNodeTemplateStyle === 'inline'"
+        *ngIf="treeNodeTemplate"
+      >
+        <ng-container
+          [ngTemplateOutlet]="treeNodeTemplate"
+          [ngTemplateOutletContext]="{ $implicit: node, node: node }"
+        >
+        </ng-container>
+      </span>
+
+      <ng-container *ngIf="showLine && treeControl.getLevel(node) > 0">
+        <span
+          class="node-bg-line-v"
+          [class.last]="node.originNode.lastData"
+          [class.hide]="
+            node.originNode.lastData && treeControl.getLevel(node) > 1
+          "
+          style="left: 20px"
+        ></span>
+        <span
+          class="node-bg-line-v"
+          [class.last]="node.originNode.last"
+          *ngIf="treeControl.getLevel(node) > 1"
+          [style.left.px]="20 + (treeControl.getLevel(node) - 1) * 40"
+        ></span>
+        <span
+          class="node-bg-line-h"
+          [style.left.px]="20 + (treeControl.getLevel(node) - 1) * 40"
+        ></span>
+      </ng-container>
+    </mat-tree-node>
+  </mat-tree>
+</cdk-virtual-scroll-viewport>
+
+<!-- Copyright 2018 Google Inc. All Rights Reserved.
+    Use of this source code is governed by an MIT-style license that
+    can be found in the LICENSE file at http://angular.io/license -->

@@ -1,0 +1,75 @@
+<div style="height: 500px">
+  <app-virtual-scroll-tree
+    [checkedable]="true"
+    [fullDatasource]="fullDatasource"
+    #virtualScrollTree
+  >
+    <ng-template #treeNodeTemplate let-node let-index="index">
+      <a
+        style="margin-left: 10px; text-decoration: underline; cursor: pointer"
+        (click)="editClick(node.originNode, 'add')"
+        >新增</a
+      >
+      <a
+        style="margin-left: 10px; text-decoration: underline; cursor: pointer"
+        (click)="editClick(node.originNode, 'update')"
+        >编辑</a
+      >
+      <a
+        style="margin-left: 10px; text-decoration: underline; cursor: pointer"
+        (click)="deleteClick(node.originNode)"
+        >删除</a
+      >
+    </ng-template>
+  </app-virtual-scroll-tree>
+</div>
+
+<nz-modal
+  [(nzVisible)]="isVisible"
+  [nzTitle]="editType === 'add' ? '新增' : '编辑'"
+  (nzOnCancel)="handleCancel()"
+  (nzOnOk)="handleOk()"
+>
+  <ng-container *nzModalContent>
+    <div>
+      <span>名称：</span>
+      <input
+        type="text"
+        nz-input
+        [(ngModel)]="name"
+        style="display: inline-block; width: 200px"
+      />
+    </div>
+    <div style="margin-top: 10px">
+      <span>上级：</span>
+      <input
+        type="text"
+        nz-input
+        [value]="selectParentOrg?.name"
+        readonly
+        style="display: inline-block; width: 200px"
+      />
+      <button nz-button style="margin-left: 10px" (click)="selectOrgClick()">
+        上级
+      </button>
+    </div>
+  </ng-container>
+</nz-modal>
+
+<nz-modal
+  [(nzVisible)]="isVisibleOrg"
+  nzTitle="组织选择"
+  (nzOnCancel)="handleOrgCancel()"
+  (nzOnOk)="handleOrgOk()"
+>
+  <ng-container *nzModalContent>
+    <div style="height: 500px">
+      <app-virtual-scroll-tree
+        [checkedable]="false"
+        [fullDatasource]="fullDatasource"
+        (selectedOriginNodeEvent)="onSelectedOriginNodeEvent($event)"
+      >
+      </app-virtual-scroll-tree>
+    </div>
+  </ng-container>
+</nz-modal>

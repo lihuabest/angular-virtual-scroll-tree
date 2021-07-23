@@ -1,0 +1,45 @@
+.node-label {
+    cursor: default;
+    &.selected {
+        color: red;
+    }
+}
+.node-line {
+    &:hover {
+        .node-template {
+            &.hover {
+                display: block;
+            }
+        }
+    }
+    .node-template {
+        &.hover {
+            display: none;
+        }
+    }
+}
+
+.node-bg-line-v {
+    width: 1px;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: 0;
+    &.last {
+        height: 51%;
+    }
+    &.hide {
+        opacity: 0;
+    }
+}
+.node-bg-line-h {
+    width: 30px;
+    height: 1px;
+    background: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: 25px;
+}
+
+.mat-tree-node {
+    position: relative;
+}
