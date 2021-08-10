@@ -250,6 +250,8 @@ export class VirtualScrollTreeComponent implements AfterViewInit, OnChanges {
 
       this.initDataLast();
     });
+
+    console.log(this.treeNodeTemplate);
   }
 
   ngOnChanges(change: SimpleChanges) {

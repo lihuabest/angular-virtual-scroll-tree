@@ -27,7 +27,7 @@ import { VirtualScrollTreeComponent } from './components/virtual-scroll-tree/vir
     FormsModule,
     BrowserAnimationsModule,
 
-    CdkTableModule,
+    // CdkTableModule,
     CdkTreeModule,
     ScrollingModule,
     MatButtonModule,
